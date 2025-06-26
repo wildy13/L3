@@ -78,7 +78,7 @@ export class TextHelper {
    */
   private _resolveFontPath(font: FontFamily, weight: FontWeight, style: FontStyle): string {
     const variants = fontRegistry[font];
-
+    console.log(variants)
     if (!variants || variants.length === 0) {
       console.warn(`[TextHelper] Font family '${font}' not found in registry.`);
       return '';
