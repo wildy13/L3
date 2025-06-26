@@ -4,10 +4,12 @@ import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import copy from 'rollup-plugin-copy';
 
+const outputDir = 'docs/dist';
+
 export default defineConfig({
   input: 'src/index.ts',
   output: {
-    file: 'docs/dist/index.js',
+    file: `${outputDir}/index.js`,
     format: 'esm',
     sourcemap: true,
   },
@@ -17,17 +19,18 @@ export default defineConfig({
     typescript({
       tsconfig: './tsconfig.json',
       declaration: true,
-      declarationDir: 'dist/types',
+      declarationDir: `${outputDir}/types`, // ✅ keep types in same output
       rootDir: 'src',
     }),
     copy({
       targets: [
-        { src: 'src/assets/fonts/Inter/*', dest: 'dist/assets/fonts/Inter' },
-        { src: 'src/assets/fonts/Roboto/*', dest: 'dist/assets/fonts/Roboto' },
-        { src: 'src/assets/fonts/Space_Grotesk/*', dest: 'dist/assets/fonts/Space_Grotesk' },
-        { src: 'src/assets/audios/*', dest: 'dist/assets/audios/' },
+        { src: 'src/assets/fonts/Inter/*', dest: `${outputDir}/assets/fonts/Inter` },
+        { src: 'src/assets/fonts/Roboto/*', dest: `${outputDir}/assets/fonts/Roboto` },
+        { src: 'src/assets/fonts/Space_Grotesk/*', dest: `${outputDir}/assets/fonts/Space_Grotesk` },
+        { src: 'src/assets/audios/*', dest: `${outputDir}/assets/audios/` },
       ]
     }),
     terser(),
   ],
 });
+

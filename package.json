@@ -15,7 +15,7 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf docs/dist",
     "build": "bunx rollup -c",
     "build:watch": "bunx rollup -c --watch",
     "lint": "eslint . --ext .ts",
