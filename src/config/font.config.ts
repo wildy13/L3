@@ -29,7 +29,7 @@ function generateInterVariants(basePath: string): FontVariant[] {
     }));
 }
 
-const assetPath = './assets/fonts/';
+const assetPath = '../../../dist/assets/fonts/';
 
 export const fontRegistry: FontRegistry = {
     'space-grotesk': [
