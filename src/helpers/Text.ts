@@ -12,8 +12,6 @@ export class TextHelper {
 
   constructor() {
     this.content = new Text();
-
-    console.log(import.meta.url);
   }
 
   /**
