@@ -1,7 +1,5 @@
 import { Text } from 'troika-three-text';
 import * as THREE from 'three';
-import { FontFamily, FontStyle, FontWeight } from '../types/font.type';
-import { fontRegistry } from '../config/font.config';
 import { TextOptions } from '../types/text-options.type';
 
 /**
@@ -24,8 +22,8 @@ export class TextHelper {
     options: {
       maxWidth = 1,
       color = new THREE.Color(0xffffff),
-      fontFamily = 'space-grotesk',
-      fontWeight = 'regular',
+      font,
+      fontWeight = 'normal',
       fontStyle = 'normal',
       fontSize = 0.015,
       anchorX = 'center',
@@ -41,6 +39,7 @@ export class TextHelper {
     options: TextOptions;
   }): Text {
     this.content.text = text;
+    this.content.fontWeight = fontWeight as 'normal' | 'bold'
     this.content.fontSize = fontSize;
     this.content.fontStyle = fontStyle;
     this.content.textAlign = textAlign;
@@ -53,7 +52,7 @@ export class TextHelper {
     this.content.maxWidth = maxWidth * 0.9;
     this.content.color = color;
 
-    this.content.font = this._resolveFontPath(fontFamily, fontWeight, fontStyle);
+    if(font) this.content.font = font;
 
     this.content.sync();
     return this.content;
@@ -66,32 +65,5 @@ export class TextHelper {
   public change({ text }: { text: string }): void {
     this.content.text = text;
     this.content.sync();
-  }
-
-  /**
-   * Resolves the font path based on the given family, weight, and style.
-   * Logs a warning and falls back if the combination is not found.
-   * @param font - Font family key.
-   * @param weight - Font weight variant.
-   * @param style - Font style variant.
-   * @returns Resolved font path.
-   */
-  private _resolveFontPath(font: FontFamily, weight: FontWeight, style: FontStyle): string {
-    const variants = fontRegistry[font];
-    console.log(variants)
-    if (!variants || variants.length === 0) {
-      console.warn(`[TextHelper] Font family '${font}' not found in registry.`);
-      return '';
-    }
-
-    const matched = variants.find(v => v.weight === weight && v.style === style);
-
-    if (!matched) {
-      console.warn(
-        `[TextHelper] Variant for '${font}' with weight='${weight}' and style='${style}' not found. Using fallback.`
-      );
-    }
-
-    return matched?.path ?? variants[0].path;
   }
 }

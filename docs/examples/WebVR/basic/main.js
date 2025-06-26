@@ -26,9 +26,8 @@ class App {
             text: `Hello world — meet the Space Grotesk font!`,
             options: {
                 maxWidth: 1,
-                font: 'space-grotesk',
-                weight: 'medium',
-                style: 'normal'
+                font: '../../../dist/assets/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf'
+
             }
         });
         this.text.position.set(this.worldPosition.x, this.worldPosition.y, -0.5);

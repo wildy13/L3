@@ -1,11 +1,9 @@
 import { ColorRepresentation, Material } from 'three'
-import type { FontFamily, FontStyle, FontWeight } from './font.type'
-
 export interface TextOptions {
-    fontFamily?: FontFamily
+    font?: string
     fontSize?: number
-    fontStyle?: FontStyle
-    fontWeight?: FontWeight
+    fontStyle?: 'italic' | 'normal'
+    fontWeight?: 'normal' | 'weight'
     lang?: string
     letterSpacing?: number
     lineHeight?: number
