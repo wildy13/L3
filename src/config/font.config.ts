@@ -28,7 +28,7 @@ function generateInterVariants(basePath: URL): FontVariant[] {
         path: new URL(`${filename}.ttf`, basePath).href,
     }));
 }
-
+console.log(import.meta.url);
 export const fontRegistry: FontRegistry = {
     'space-grotesk': [
         { weight: 'regular', style: 'normal', path: new URL('./assets/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf', import.meta.url).href },
