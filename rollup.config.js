@@ -19,7 +19,7 @@ export default defineConfig({
     typescript({
       tsconfig: './tsconfig.json',
       declaration: true,
-      declarationDir: `${outputDir}/types`, // ✅ keep types in same output
+      declarationDir: `${outputDir}/types`,
       rootDir: 'src',
     }),
     copy({
