@@ -1,6 +1,6 @@
 import { FontRegistry, FontVariant } from "../types/font.type";
 
-function generateInterVariants(basePath: string): FontVariant[] {
+function generateInterVariants(basePath: URL): FontVariant[] {
     const variants: [FontVariant['weight'], FontVariant['style'], string][] = [
         ['thin', 'normal', 'Thin'],
         ['thin', 'italic', 'ThinItalic'],
@@ -20,37 +20,38 @@ function generateInterVariants(basePath: string): FontVariant[] {
         ['extrabold', 'italic', 'ExtraBoldItalic'],
         ['black', 'normal', 'Black'],
         ['black', 'italic', 'BlackItalic'],
-    ]
+    ];
 
     return variants.map(([weight, style, filename]) => ({
         weight,
         style,
-        path: `${basePath}${filename}.ttf`,
-    }))
+        path: new URL(`${filename}.ttf`, basePath).href,
+    }));
 }
 
-const assetPath = '/docs/dist/assets/fonts/';
+const assetBase = new URL('./assets/fonts/', import.meta.url);
+
 export const fontRegistry: FontRegistry = {
     'space-grotesk': [
-        { weight: 'regular', style: 'normal', path: `${assetPath}Space_Grotesk/static/SpaceGrotesk-Regular.ttf` },
-        { weight: 'light', style: 'normal', path: `${assetPath}Space_Grotesk/static/SpaceGrotesk-Light.ttf` },
-        { weight: 'bold', style: 'normal', path: `${assetPath}Space_Grotesk/static/SpaceGrotesk-Bold.ttf` },
-        { weight: 'medium', style: 'normal', path: `${assetPath}Space_Grotesk/static/SpaceGrotesk-Medium.ttf` },
-        { weight: 'semibold', style: 'normal', path: `${assetPath}Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf` }
+        { weight: 'regular', style: 'normal', path: new URL('Space_Grotesk/static/SpaceGrotesk-Regular.ttf', assetBase).href },
+        { weight: 'light', style: 'normal', path: new URL('Space_Grotesk/static/SpaceGrotesk-Light.ttf', assetBase).href },
+        { weight: 'bold', style: 'normal', path: new URL('Space_Grotesk/static/SpaceGrotesk-Bold.ttf', assetBase).href },
+        { weight: 'medium', style: 'normal', path: new URL('Space_Grotesk/static/SpaceGrotesk-Medium.ttf', assetBase).href },
+        { weight: 'semibold', style: 'normal', path: new URL('Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf', assetBase).href },
     ],
-    'inter-18pt': generateInterVariants(`${assetPath}Inter/static/Inter_18pt-`),
-    'inter-24pt': generateInterVariants(`${assetPath}Inter/static/Inter_24pt-`),
-    'inter-28pt': generateInterVariants(`${assetPath}Inter/static/Inter_28pt-`),
+    'inter-18pt': generateInterVariants(new URL('Inter/static/Inter_18pt-', assetBase)),
+    'inter-24pt': generateInterVariants(new URL('Inter/static/Inter_24pt-', assetBase)),
+    'inter-28pt': generateInterVariants(new URL('Inter/static/Inter_28pt-', assetBase)),
     'roboto': [
-        { weight: 'regular', style: 'normal', path: `${assetPath}Roboto/static/Roboto-Regular.ttf` },
-        { weight: 'bold', style: 'normal', path: `${assetPath}Roboto/static/Roboto-Bold.ttf` },
-        { weight: 'light', style: 'italic', path: `${assetPath}Roboto/static/Roboto-LightItalic.ttf` }
+        { weight: 'regular', style: 'normal', path: new URL('Roboto/static/Roboto-Regular.ttf', assetBase).href },
+        { weight: 'bold', style: 'normal', path: new URL('Roboto/static/Roboto-Bold.ttf', assetBase).href },
+        { weight: 'light', style: 'italic', path: new URL('Roboto/static/Roboto-LightItalic.ttf', assetBase).href },
     ],
     'roboto-condensed': [
-        { weight: 'regular', style: 'normal', path: `${assetPath}Roboto/static/Roboto_Condensed-Regular.ttf` },
-        { weight: 'bold', style: 'italic', path: `${assetPath}Roboto/static/Roboto_Condensed-BoldItalic.ttf` }
+        { weight: 'regular', style: 'normal', path: new URL('Roboto/static/Roboto_Condensed-Regular.ttf', assetBase).href },
+        { weight: 'bold', style: 'italic', path: new URL('Roboto/static/Roboto_Condensed-BoldItalic.ttf', assetBase).href },
     ],
     'roboto-semicondensed': [
-        { weight: 'regular', style: 'normal', path: `${assetPath}Roboto/static/Roboto_SemiCondensed-Regular.ttf` }
-    ]
-}
+        { weight: 'regular', style: 'normal', path: new URL('Roboto/static/Roboto_SemiCondensed-Regular.ttf', assetBase).href },
+    ],
+};
