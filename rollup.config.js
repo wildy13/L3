@@ -7,7 +7,7 @@ import copy from 'rollup-plugin-copy';
 export default defineConfig({
   input: 'src/index.ts',
   output: {
-    file: 'dist/index.js',
+    file: 'docs/dist/index.js',
     format: 'esm',
     sourcemap: true,
   },
