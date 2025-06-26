@@ -54,7 +54,7 @@ class App {
         this.buttonClickSound = new THREE.Audio(this.template.AudioListener);
         this.buttonHoverSound = new THREE.Audio(this.template.AudioListener);
         this.template.AudioLoader.load(
-            'https://raw.githubusercontent.com/wildy13/L3/master/src/assets/audios/button-click.mp3',
+            '../../../dist/assets/audios/button-click.mp3',
             (buffer) => {
                 this.buttonClickSound.setBuffer(buffer);
                 this.buttonClickSound.setVolume(2.5);
@@ -62,7 +62,7 @@ class App {
         );
 
         this.template.AudioLoader.load(
-            'https://raw.githubusercontent.com/wildy13/L3/master/src/assets/audios/button-hover.ogg',
+            '../../../dist/assets/audios/button-hover.ogg',
             (buffer) => {
                 this.buttonHoverSound.setBuffer(buffer);
                 this.buttonHoverSound.setVolume(2.5);
