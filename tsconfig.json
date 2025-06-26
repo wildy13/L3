@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["DOM", "ESNext", "WebWorker"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    "baseUrl": "./src",
+    "paths": {
+      "three/examples/*": ["../node_modules/three/examples/*"]
+    },
+    "types": ["three", "webxr"],
+    "typeRoots": ["./node_modules/@types", "src/types"]
+  },
+  "include": ["src"]
+}

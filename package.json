@@ -1,0 +1,44 @@
+{
+  "name": "l3",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "bunx rollup -c",
+    "build:watch": "bunx rollup -c --watch",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "ecsy": "^0.4.3",
+    "three": "^0.162.0",
+    "troika-three-text": "^0.52.4"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@types/three": "^0.177.0",
+    "@types/webxr": "^0.5.22",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^8.50.0",
+    "rollup": "^4.0.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "typescript": "^5.3.0",
+    "vitest": "^3.2.4"
+  }
+}
