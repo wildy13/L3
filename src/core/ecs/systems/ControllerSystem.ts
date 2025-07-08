@@ -3,6 +3,7 @@ import { ControllerComponent } from '../components/ControllerComponent';
 import * as THREE from 'three';
 import { Object3DComponent } from '../components/Object3DComponent';
 import { ButtonComponent } from '../components/ButtonComponent';
+import { DraggableReturnComponent } from '../components/DraggableReturnComponent';
 
 export class ControllerSystem extends System {
     previousButtonStates!: { left: boolean[]; right: boolean[]; };
@@ -133,6 +134,15 @@ export class ControllerSystem extends System {
                 this._updateColor(controller, 0xffffff);
             }
         }
+        
+        if(entity.hasComponent(DraggableReturnComponent)) {
+            const draggable = entity.getMutableComponent(DraggableReturnComponent);
+            if(draggable){
+                draggable.state = 'to-be-detached';
+                draggable.attachedPointer = null;
+                this._updateColor(controller, 0xffffff);
+            }
+        }
     }
 
     private _handleSelect(controller: THREE.Group, entity: Entity) {
@@ -142,6 +152,14 @@ export class ControllerSystem extends System {
                 button.currState = 'pressed';
             }
             controller.userData.selected = true;
+        }
+
+        if(entity.hasComponent(DraggableReturnComponent)) {
+            const draggable = entity.getMutableComponent(DraggableReturnComponent);
+            if(draggable){
+                draggable.state = 'to-be-attached';
+                draggable.attachedPointer = controller;
+            }
         }
     }
 

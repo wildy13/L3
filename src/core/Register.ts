@@ -11,11 +11,13 @@ import { Object3DComponent } from './ecs/components/Object3DComponent';
 import { ButtonComponent } from './ecs/components/ButtonComponent';
 import { ButtonSystem } from './ecs/systems/ButtonSystem';
 import { Audio, Group, Mesh, WebGLRenderer } from 'three';
+import { DraggableReturnComponent } from './ecs/components/DraggableReturnComponent';
+import { DraggableReturnSystem } from './ecs/systems/DraggableReturnSystem';
 
 /**
  * Supported feature flags.
  */
-export type FeatureType = 'button' | 'keyboard';
+export type FeatureType = 'button' | 'keyboard' | 'draggable-return';
 
 /**
  * Configuration object passed to Register.addFeatures().
@@ -25,10 +27,15 @@ export interface DataOptions {
     data?: {
         controllers?: Group[];
         renderer?: WebGLRenderer;
+        draggableReturn?: {
+            mesh: Mesh;
+            clickSound?: Audio;
+            hoverSound?: Audio;
+        };
         button?: {
             mesh: Mesh;
-            clickSound: Audio;
-            hoverSound: Audio;
+            clickSound?: Audio;
+            hoverSound?: Audio;
             onClick: () => void;
         };
     };
@@ -46,9 +53,11 @@ export class Register {
         this._registerComponent(Object3DComponent);
         this._registerComponent(ControllerComponent);
         this._registerComponent(ButtonComponent);
+        this._registerComponent(DraggableReturnComponent);
 
         this._registerSystem(ControllerSystem);
         this._registerSystem(ButtonSystem);
+        this._registerSystem(DraggableReturnSystem);
     }
 
     /**
@@ -101,6 +110,17 @@ export class Register {
 
                 case 'keyboard': {
                     console.warn('[Register] Feature "keyboard" is not implemented yet.');
+                    break;
+                }
+
+                case 'draggable-return': {
+                    const entity = this.createEntity();
+                    entity.addComponent(ControllerComponent, {
+                        controllers: data?.controllers,
+                        renderer: data?.renderer,
+                    });
+                    entity.addComponent(Object3DComponent, { object: data?.draggableReturn?.mesh });
+                    entity.addComponent(DraggableReturnComponent);
                     break;
                 }
 
