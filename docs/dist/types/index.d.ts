@@ -11,6 +11,7 @@ import { Load3DModel } from 'core/Load3DModel';
 export declare const L3: {
     readonly Template: {
         VR: typeof import("./modules/WebVR").VR;
+        XR: typeof import("./modules/WebXR").XR;
     };
     readonly PerformanceHelper: typeof PerformanceHelper;
     readonly Register: typeof Register;
