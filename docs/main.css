@@ -82,15 +82,3 @@ section {
   -ms-overflow-style: none; /* IE/Edge */
 }
 
-.info {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-}

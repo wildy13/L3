@@ -4,6 +4,7 @@ import { PerformanceHelper } from './helpers/Performance';
 import { Register } from './core/Register';
 import { TextHelper } from './helpers/Text';
 import { ButtonHelper } from './helpers/Button';
+import { Load3DModel } from 'core/Load3DModel';
 
 /**
  * Centralized export object for L3 toolkit components.
@@ -13,6 +14,7 @@ export const L3 = {
     Template,
     PerformanceHelper,
     Register,
+    Load3DModel,
     TextHelper,
     ButtonHelper
 } as const;
@@ -29,6 +31,7 @@ export {
     Template,
     PerformanceHelper,
     Register,
+    Load3DModel,
     TextHelper,
     ButtonHelper
 };
