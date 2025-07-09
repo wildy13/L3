@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { Object3DComponent } from '../components/Object3DComponent';
 import { ButtonComponent } from '../components/ButtonComponent';
 import { DraggableReturnComponent } from '../components/DraggableReturnComponent';
+import { DraggableDefaultComponent } from '../components/DraggableDefaultComponent';
 
 export class ControllerSystem extends System {
     previousButtonStates!: { left: boolean[]; right: boolean[]; };
@@ -134,10 +135,19 @@ export class ControllerSystem extends System {
                 this._updateColor(controller, 0xffffff);
             }
         }
-        
-        if(entity.hasComponent(DraggableReturnComponent)) {
+
+        if (entity.hasComponent(DraggableReturnComponent)) {
             const draggable = entity.getMutableComponent(DraggableReturnComponent);
-            if(draggable){
+            if (draggable) {
+                draggable.state = 'to-be-detached';
+                draggable.attachedPointer = null;
+                this._updateColor(controller, 0xffffff);
+            }
+        }
+
+        if (entity.hasComponent(DraggableDefaultComponent)) {
+            const draggable = entity.getMutableComponent(DraggableDefaultComponent);
+            if (draggable) {
                 draggable.state = 'to-be-detached';
                 draggable.attachedPointer = null;
                 this._updateColor(controller, 0xffffff);
@@ -154,9 +164,17 @@ export class ControllerSystem extends System {
             controller.userData.selected = true;
         }
 
-        if(entity.hasComponent(DraggableReturnComponent)) {
+        if (entity.hasComponent(DraggableReturnComponent)) {
             const draggable = entity.getMutableComponent(DraggableReturnComponent);
-            if(draggable){
+            if (draggable) {
+                draggable.state = 'to-be-attached';
+                draggable.attachedPointer = controller;
+            }
+        }
+
+        if (entity.hasComponent(DraggableDefaultComponent)) {
+            const draggable = entity.getMutableComponent(DraggableDefaultComponent);
+            if (draggable) {
                 draggable.state = 'to-be-attached';
                 draggable.attachedPointer = controller;
             }
