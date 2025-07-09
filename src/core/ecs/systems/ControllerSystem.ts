@@ -119,9 +119,15 @@ export class ControllerSystem extends System {
 
 
     private _StartAction(index: number, controller: THREE.Group, entity: Entity, intersection: THREE.Intersection) {
-        if (index === 0) {
-            this._updateColor(controller, 0x22d3ee);
-            this._handleSelect(controller, entity);
+        switch (index) {
+            case 0:
+                this._updateColor(controller, 0x22d3ee);
+                this._handleSelect(controller, entity);
+                break;
+            case 1:
+                this._updateColor(controller, 0x22d3ee);
+                this._handleSnap(controller, entity);
+                break;
         }
     }
 
@@ -151,6 +157,24 @@ export class ControllerSystem extends System {
                 draggable.state = 'to-be-detached';
                 draggable.attachedPointer = null;
                 this._updateColor(controller, 0xffffff);
+            }
+        }
+    }
+
+    private _handleSnap(controller: THREE.Group, entity: Entity) {
+        if (entity.hasComponent(DraggableReturnComponent)) {
+            const draggable = entity.getMutableComponent(DraggableReturnComponent);
+            if (draggable) {
+                draggable.state = 'to-be-draggable';
+                draggable.attachedPointer = controller;
+            }
+        }
+
+        if (entity.hasComponent(DraggableDefaultComponent)) {
+            const draggable = entity.getMutableComponent(DraggableDefaultComponent);
+            if (draggable) {
+                draggable.state = 'to-be-draggable';
+                draggable.attachedPointer = controller;
             }
         }
     }

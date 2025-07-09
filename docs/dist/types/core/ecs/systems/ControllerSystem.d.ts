@@ -12,6 +12,7 @@ export declare class ControllerSystem extends System {
     private _handleButton;
     private _StartAction;
     private _EndAction;
+    private _handleSnap;
     private _handleSelect;
     private _onHover;
     private _onUnhover;

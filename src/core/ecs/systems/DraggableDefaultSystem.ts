@@ -10,8 +10,18 @@ export class DraggableDefaultSystem extends System {
         this.queries.draggableReturn.results.forEach(entity => {
             const draggable = entity.getMutableComponent(DraggableDefaultComponent);
             const object = entity.getComponent(Object3DComponent)?.object;
-
+           
             if (draggable?.originalParent === null) draggable.originalParent = object?.parent;
+            /*         
+            if (draggable?.originalPosition?.equals(new Vector3())) {
+                const globalPosition = new Vector3();
+                object?.updateWorldMatrix(true, true);
+                object?.getWorldPosition(globalPosition);
+                draggable.originalPosition = draggable.originalParent.worldToLocal(globalPosition.clone());
+            }
+            */
+
+            if (draggable?.originalQuaternion?.equals(new Quaternion())) object?.quaternion.clone();
 
             switch (draggable?.state) {
                 case 'to-be-attached':
@@ -25,7 +35,13 @@ export class DraggableDefaultSystem extends System {
                 case 'to-be-draggable':
                     if (!object?.position) break;
 
-                    object.position.z = MathUtils.damp(object?.position.z, -0.3, 0.1, 0.6);
+                    /*
+                    object?.position.copy(draggable.originalPosition);
+                    object?.quaternion.copy(draggable?.originalQuaternion);
+
+                    object?.updateMatrixWorld(true);
+                    */
+                    object.position.z = MathUtils.damp(object?.position.z, (draggable.attachedPointer.position.z - 0.5), 0.1, 0.6);
                     if (Math.abs(object.position.z - 0.1) < 0.01) {
                         draggable.state = 'attached';
                     }

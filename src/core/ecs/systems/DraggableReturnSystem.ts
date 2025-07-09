@@ -40,7 +40,7 @@ export class DraggableReturnSystem extends System {
                 case 'to-be-draggable':
                     if (!object?.position) break;
 
-                    object.position.z = MathUtils.damp(object?.position.z, -0.3, 0.1, 0.6);
+                    object.position.z = MathUtils.damp(object?.position.z, (draggable.attachedPointer.position.z - 0.5), 0.1, 0.6);
                     if (Math.abs(object.position.z - 0.1) < 0.01) {
                         draggable.state = 'attached';
                     }

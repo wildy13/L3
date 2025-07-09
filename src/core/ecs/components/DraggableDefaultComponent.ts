@@ -1,4 +1,4 @@
-import { Audio } from 'three';
+import { Audio, Quaternion, Vector3 } from 'three';
 import { Component, Types } from 'ecsy';
 
 export class DraggableDefaultComponent extends Component<DraggableDefaultComponent> {
@@ -9,6 +9,8 @@ export class DraggableDefaultComponent extends Component<DraggableDefaultCompone
     isClickSound?: boolean = false;
     hoverSound?: Audio;
     isHoverSound?: boolean = false;
+    originalPosition: Vector3 = new Vector3(0, 0, 0);
+    originalQuaternion: Quaternion = new Quaternion(0, 0, 0);
 }
 
 DraggableDefaultComponent.schema = {
@@ -19,4 +21,6 @@ DraggableDefaultComponent.schema = {
     isClickSound: { type: Types.Boolean, default: false },
     hoverSound: { type: Types.Ref, default: null },
     isHoverSound: { type: Types.Boolean, default: false },
+    originalPosition: { type: Types.Ref, default: null },
+    originalQuaternion: { type: Types.Ref, default: null },
 };
