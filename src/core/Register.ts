@@ -13,11 +13,13 @@ import { ButtonSystem } from './ecs/systems/ButtonSystem';
 import { Audio, Group, Mesh, WebGLRenderer } from 'three';
 import { DraggableReturnComponent } from './ecs/components/DraggableReturnComponent';
 import { DraggableReturnSystem } from './ecs/systems/DraggableReturnSystem';
+import { DraggableDefaultComponent } from './ecs/components/DraggableDefaultComponent';
+import { DraggableDefaultSystem } from './ecs/systems/DraggableDefaultSystem';
 
 /**
  * Supported feature flags.
  */
-export type FeatureType = 'button' | 'keyboard' | 'draggable-return';
+export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default';
 
 /**
  * Configuration object passed to Register.addFeatures().
@@ -28,6 +30,11 @@ export interface DataOptions {
         controllers?: Group[];
         renderer?: WebGLRenderer;
         draggableReturn?: {
+            mesh: Mesh;
+            clickSound?: Audio;
+            hoverSound?: Audio;
+        };
+        draggableDefault?: {
             mesh: Mesh;
             clickSound?: Audio;
             hoverSound?: Audio;
@@ -54,10 +61,12 @@ export class Register {
         this._registerComponent(ControllerComponent);
         this._registerComponent(ButtonComponent);
         this._registerComponent(DraggableReturnComponent);
+        this._registerComponent(DraggableDefaultComponent);
 
         this._registerSystem(ControllerSystem);
         this._registerSystem(ButtonSystem);
         this._registerSystem(DraggableReturnSystem);
+        this._registerSystem(DraggableDefaultSystem);
     }
 
     /**
@@ -122,6 +131,16 @@ export class Register {
                     entity.addComponent(Object3DComponent, { object: data?.draggableReturn?.mesh });
                     entity.addComponent(DraggableReturnComponent);
                     break;
+                }
+
+                case 'draggable-default': {
+                    const entity = this.createEntity();
+                    entity.addComponent(ControllerComponent, {
+                        controllers: data?.controllers,
+                        renderer: data?.renderer,
+                    });
+                    entity.addComponent(Object3DComponent, { object: data?.draggableReturn?.mesh });
+                    entity.addComponent(DraggableDefaultComponent);
                 }
 
                 default: {
