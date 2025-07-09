@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Installation – L3 Docs</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        h1, h2 {
+            color: #2d3748;
+        }
+
+        a {
+            color: #007acc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .note {
+            background-color: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Installation</h1>
+
+    <p>
+        To begin using the <strong>L3 documentation system</strong> locally or in your own project, follow the steps below.
+    </p>
+
+    <h2>1. Download the <code>dist</code> Folder</h2>
+    <p>
+        Visit the GitHub repository and download the contents of the <code>dist</code> folder here:
+        <br>
+        <a href="https://github.com/wildy13/L3/tree/master/docs/dist" target="_blank">
+            https://github.com/wildy13/L3/tree/master/docs/dist
+        </a>
+    </p>
+
+    <div class="note">
+        <strong>Tip:</strong> If GitHub doesn't allow downloading a single folder directly, you can:
+        <ul>
+            <li>Clone the whole repository using <code>git clone https://github.com/wildy13/L3.git</code>, or</li>
+            <li>Use <a href="https://download-directory.github.io/" target="_blank">download-directory.github.io</a> to download only the <code>dist</code> folder.</li>
+        </ul>
+    </div>
+
+    <h2>2. Serve the Folder</h2>
+    <p>
+        To view the documentation locally, serve the <code>dist</code> folder using any static file server. For example:
+    </p>
+
+    <pre><code>npx serve dist</code></pre>
+
+    <p>
+        This will open the documentation in your browser (default: <code>http://localhost:3000</code>).
+    </p>
+
+    <h2>3. Open in Browser</h2>
+    <p>
+        Once served, navigate to the local URL to explore the documentation using the sidebar menu.
+    </p>
+</body>
+
+</html>
