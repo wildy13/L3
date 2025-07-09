@@ -10,7 +10,7 @@ function loadContent(path) {
     .find(link => link.getAttribute("onclick").includes(path));
 
   if (activeLink) {
-    document.getElementById("page-title").textContent = activeLink.textContent;
+    //document.getElementById("page-title").textContent = activeLink.textContent;
     activeLink.classList.add("active");
   }
 }

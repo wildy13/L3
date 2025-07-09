@@ -69,3 +69,15 @@ nav a.active {
   background-color: #007acc;
   color: white;
 }
+
+aside::-webkit-scrollbar,
+section::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+aside,
+section {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
