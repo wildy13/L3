@@ -1,4 +1,4 @@
-import { Audio, Group, Quaternion, Vector3 } from 'three';
+import { Audio, Quaternion, Vector3 } from 'three';
 import { Component, Types } from 'ecsy';
 
 export class DraggableReturnComponent extends Component<DraggableReturnComponent> {
