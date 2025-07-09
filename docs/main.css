@@ -38,7 +38,8 @@ section {
   flex: 1;
 }
 
-nav h2, nav h3 {
+nav h2,
+nav h3 {
   font-size: 0.875rem;
   margin-top: 1.5rem;
   color: #4a5568;
@@ -58,16 +59,13 @@ nav a {
   text-decoration: none;
   color: #2b6cb0;
   display: block;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 nav a:hover,
 nav a.active {
   background-color: #007acc;
   color: white;
-  border-radius: 4px;
-  padding: 4px 8px;
-  display: inline-block;
 }
-
