@@ -3,7 +3,7 @@ import { Audio, Group, Mesh, WebGLRenderer } from 'three';
 /**
  * Supported feature flags.
  */
-export type FeatureType = 'button' | 'keyboard' | 'draggable-return';
+export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default';
 /**
  * Configuration object passed to Register.addFeatures().
  */
@@ -13,6 +13,11 @@ export interface DataOptions {
         controllers?: Group[];
         renderer?: WebGLRenderer;
         draggableReturn?: {
+            mesh: Mesh;
+            clickSound?: Audio;
+            hoverSound?: Audio;
+        };
+        draggableDefault?: {
             mesh: Mesh;
             clickSound?: Audio;
             hoverSound?: Audio;
