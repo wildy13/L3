@@ -3,7 +3,7 @@ import { Audio, Group, Mesh, WebGLRenderer } from 'three';
 /**
  * Supported feature flags.
  */
-export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default';
+export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default' | 'movement';
 /**
  * Configuration object passed to Register.addFeatures().
  */
@@ -27,6 +27,9 @@ export interface DataOptions {
             clickSound?: Audio;
             hoverSound?: Audio;
             onClick: () => void;
+        };
+        movement?: {
+            player: Group;
         };
     };
 }

@@ -5,6 +5,7 @@ import { Object3DComponent } from '../components/Object3DComponent';
 import { ButtonComponent } from '../components/ButtonComponent';
 import { DraggableReturnComponent } from '../components/DraggableReturnComponent';
 import { DraggableDefaultComponent } from '../components/DraggableDefaultComponent';
+import { MovementFPSComponent } from '../components/MovementFPSComponent';
 
 export class ControllerSystem extends System {
     previousButtonStates!: { left: boolean[]; right: boolean[]; };
@@ -24,16 +25,14 @@ export class ControllerSystem extends System {
             const object = entity.getComponent(Object3DComponent)?.object;
 
             if (!session) return;
-            if (!object) {
-                console.error("object is not defined.");
-                return;
-            }
 
             session.inputSources.forEach((source: XRInputSource & { gamepad: Gamepad; }) => {
                 components.controllers.forEach((c: THREE.Group) => {
                     const handedness = c.userData.handedness;
-                    if (source.handedness !== handedness) return;
 
+                    if (source.handedness !== handedness) return;
+                    this._handleJoystic(source, c, entity);
+                    if (!object) return;
                     const intersections = this._getIntersections(c, object);
 
                     if (intersections.length > 0) {
@@ -65,8 +64,32 @@ export class ControllerSystem extends System {
                     }
                 });
             });
-
         });
+    }
+
+    private _handleJoystic(source: XRInputSource, controller: THREE.Group, entity: Entity) {
+        const handedness = source.handedness;
+        const gamepad = source.gamepad;
+
+        if (handedness == 'left' && handedness === controller.userData.handedness && gamepad && gamepad.axes.length >= 2) {
+            const inputX = gamepad.axes[2];
+            const inputZ = gamepad.axes[3];
+            const movement = new THREE.Vector3(inputX, 0, inputZ);
+
+            if (entity.hasComponent(MovementFPSComponent)) {
+                const component = entity.getMutableComponent(MovementFPSComponent);
+                if (component) {
+                    if (movement.x === 0 && movement.z === 0) {
+                        component.state = 'none';
+                        return;
+                    } else {
+                        component.state = 'walk';
+                        component.axesX =  inputX;
+                        component.axesZ = inputZ;
+                    }
+                }
+            }
+        }
     }
 
     private _updateLine(controller: THREE.Group, intersection: THREE.Intersection) {

@@ -6,6 +6,7 @@ export declare class ControllerSystem extends System {
     };
     init(attributes?: Attributes): void;
     execute(delta: number, time: number): void;
+    private _handleJoystic;
     private _updateLine;
     private _resetLine;
     private _updateColor;

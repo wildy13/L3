@@ -15,11 +15,13 @@ import { DraggableReturnComponent } from './ecs/components/DraggableReturnCompon
 import { DraggableReturnSystem } from './ecs/systems/DraggableReturnSystem';
 import { DraggableDefaultComponent } from './ecs/components/DraggableDefaultComponent';
 import { DraggableDefaultSystem } from './ecs/systems/DraggableDefaultSystem';
+import { MovementFPSComponent } from './ecs/components/MovementFPSComponent';
+import { MovementFPSSystem } from './ecs/systems/MovementFPSSystem';
 
 /**
  * Supported feature flags.
  */
-export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default';
+export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default' | 'movement';
 
 /**
  * Configuration object passed to Register.addFeatures().
@@ -45,6 +47,9 @@ export interface DataOptions {
             hoverSound?: Audio;
             onClick: () => void;
         };
+        movement?: {
+            player: Group;
+        }
     };
 }
 
@@ -62,11 +67,13 @@ export class Register {
         this._registerComponent(ButtonComponent);
         this._registerComponent(DraggableReturnComponent);
         this._registerComponent(DraggableDefaultComponent);
+        this._registerComponent(MovementFPSComponent);
 
         this._registerSystem(ControllerSystem);
         this._registerSystem(ButtonSystem);
         this._registerSystem(DraggableReturnSystem);
         this._registerSystem(DraggableDefaultSystem);
+        this._registerSystem(MovementFPSSystem);
     }
 
     /**
@@ -141,6 +148,16 @@ export class Register {
                     });
                     entity.addComponent(Object3DComponent, { object: data?.draggableReturn?.mesh });
                     entity.addComponent(DraggableDefaultComponent);
+                }
+
+                case 'movement': {
+                    const entity = this.createEntity();
+                    entity.addComponent(ControllerComponent, {
+                        controllers: data?.controllers,
+                        renderer: data?.renderer,
+                    });
+                    entity.addComponent(MovementFPSComponent, { player: data?.movement?.player })
+                    break;
                 }
 
                 default: {
