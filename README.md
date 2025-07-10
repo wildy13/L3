@@ -1,4 +1,4 @@
-# 🚀 L3 Template VR App (Three.js + TypeScript)
+# 🚀 L3 Template VR/XR/AR App
 
 A modular TypeScript-first application using the `l3` library built on top of **Three.js**, designed for WebXR/VR interaction with reusable components like buttons, text, and sound. This project demonstrates a clean and structured approach to managing 3D UI using `L3.Template.VR`.
 
