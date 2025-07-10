@@ -16,7 +16,7 @@ import { DraggableReturnSystem } from './ecs/systems/DraggableReturnSystem';
 import { DraggableDefaultComponent } from './ecs/components/DraggableDefaultComponent';
 import { DraggableDefaultSystem } from './ecs/systems/DraggableDefaultSystem';
 import { MovementFPSComponent } from './ecs/components/MovementFPSComponent';
-import { MovementFPSSystem } from './ecs/systems/MovementFPSSystem';
+
 
 /**
  * Supported feature flags.
@@ -73,7 +73,6 @@ export class Register {
         this._registerSystem(ButtonSystem);
         this._registerSystem(DraggableReturnSystem);
         this._registerSystem(DraggableDefaultSystem);
-        this._registerSystem(MovementFPSSystem);
     }
 
     /**

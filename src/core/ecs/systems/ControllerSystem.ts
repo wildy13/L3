@@ -31,7 +31,7 @@ export class ControllerSystem extends System {
                     const handedness = c.userData.handedness;
 
                     if (source.handedness !== handedness) return;
-                    this._handleJoystic(source, c, entity);
+                    this._handleJoystic(source, c, entity, delta);
                     if (!object) return;
                     const intersections = this._getIntersections(c, object);
 
@@ -67,30 +67,42 @@ export class ControllerSystem extends System {
         });
     }
 
-    private _handleJoystic(source: XRInputSource, controller: THREE.Group, entity: Entity) {
+    private _handleJoystic(source: XRInputSource, controller: THREE.Group, entity: Entity, delta: number) {
+
         const handedness = source.handedness;
         const gamepad = source.gamepad;
 
-        if (handedness == 'left' && handedness === controller.userData.handedness && gamepad && gamepad.axes.length >= 2) {
+        if (!gamepad || !entity.hasComponent(MovementFPSComponent)) return;
+
+        const component = entity.getMutableComponent(MovementFPSComponent);
+        if (!component) return;
+
+        if (handedness === 'left' && handedness === controller.userData.handedness) {
             const inputX = gamepad.axes[2];
             const inputZ = gamepad.axes[3];
-            const movement = new THREE.Vector3(inputX, 0, inputZ);
+            const forward = new THREE.Vector3(inputX, 0, inputZ);
+            const speed = 0.025;
 
-            if (entity.hasComponent(MovementFPSComponent)) {
-                const component = entity.getMutableComponent(MovementFPSComponent);
-                if (component) {
-                    if (movement.x === 0 && movement.z === 0) {
-                        component.state = 'none';
-                        return;
-                    } else {
-                        component.state = 'walk';
-                        component.axesX =  inputX;
-                        component.axesZ = inputZ;
-                    }
-                }
-            }
+            if (forward.x === 0 && forward.z === 0) return
+            forward.normalize();
+            forward.multiplyScalar(speed);
+
+            forward.applyAxisAngle(new THREE.Vector3(0, 1, 0), component.player.rotation.y);
+
+            const nextPosition = component.player.position.clone().add(forward);
+            component.player.position.copy(nextPosition);
+
+        }
+
+        if (handedness === 'right' && handedness === controller.userData.handedness) {
+            const inputX = gamepad.axes[2];
+            const speed = THREE.MathUtils.degToRad(90);
+
+            if(Math.abs(inputX) > 0.1) component.player.rotation.y -= inputX * speed * delta;
+
         }
     }
+
 
     private _updateLine(controller: THREE.Group, intersection: THREE.Intersection) {
         const line = controller.getObjectByName(`line-${controller.userData.handedness}`);
