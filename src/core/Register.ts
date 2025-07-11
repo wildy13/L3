@@ -181,6 +181,7 @@ export class Register {
                         player: data?.teleport?.player,
                         marker: data?.teleport?.marker,
                     });
+                    break;
                 }
                 default: {
                     console.warn(`[Register] Unknown feature: "${feature}"`);
