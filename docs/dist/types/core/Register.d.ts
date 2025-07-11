@@ -1,9 +1,9 @@
 import { World } from 'ecsy';
-import { Audio, Group, Mesh, WebGLRenderer } from 'three';
+import { Audio, Group, Mesh, Vector3, WebGLRenderer } from 'three';
 /**
  * Supported feature flags.
  */
-export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default' | 'movement';
+export type FeatureType = 'button' | 'keyboard' | 'draggable-return' | 'draggable-default' | 'movement' | 'teleport';
 /**
  * Configuration object passed to Register.addFeatures().
  */
@@ -30,6 +30,12 @@ export interface DataOptions {
         };
         movement?: {
             player: Group;
+        };
+        teleport: {
+            floor: Mesh;
+            point: Vector3;
+            player: Group;
+            marker: Mesh;
         };
     };
 }

@@ -6,6 +6,7 @@ import { ButtonComponent } from '../components/ButtonComponent';
 import { DraggableReturnComponent } from '../components/DraggableReturnComponent';
 import { DraggableDefaultComponent } from '../components/DraggableDefaultComponent';
 import { MovementFPSComponent } from '../components/MovementFPSComponent';
+import { TeleportComponent } from '../components/TeleportComponent';
 
 export class ControllerSystem extends System {
     previousButtonStates!: { left: boolean[]; right: boolean[]; };
@@ -48,7 +49,7 @@ export class ControllerSystem extends System {
                             this._updateLine(c, intersection);
 
                             gamepad.buttons.forEach((b: GamepadButton, i: number) => {
-                                this._handleButton(b, i, c, entity, intersection, gamepad);
+                                this._handleButton(b, i, c, entity, intersection, gamepad, components.renderer);
                             });
                         }
 
@@ -98,7 +99,7 @@ export class ControllerSystem extends System {
             const inputX = gamepad.axes[2];
             const speed = THREE.MathUtils.degToRad(90);
 
-            if(Math.abs(inputX) > 0.1) component.player.rotation.y -= inputX * speed * delta;
+            if (Math.abs(inputX) > 0.1) component.player.rotation.y -= inputX * speed * delta;
 
         }
     }
@@ -129,7 +130,8 @@ export class ControllerSystem extends System {
         controller: THREE.Group,
         entity: Entity,
         intersection: THREE.Intersection,
-        gamepad: Gamepad
+        gamepad: Gamepad,
+        renderer: THREE.WebGLRenderer
     ) {
         const side = controller.userData.handedness as 'left' | 'right';
 
@@ -140,7 +142,7 @@ export class ControllerSystem extends System {
         const wasPressed = this.previousButtonStates[side][index] || false;
 
         if (button.pressed && !wasPressed) {
-            this._StartAction(index, controller, entity, intersection);
+            this._StartAction(index, controller, entity, intersection, renderer);
 
             if (gamepad && gamepad.hapticActuators && gamepad.hapticActuators.length > 0) {
                 gamepad.hapticActuators[0].pulse(.5, 80);
@@ -153,11 +155,11 @@ export class ControllerSystem extends System {
     }
 
 
-    private _StartAction(index: number, controller: THREE.Group, entity: Entity, intersection: THREE.Intersection) {
+    private _StartAction(index: number, controller: THREE.Group, entity: Entity, intersection: THREE.Intersection, renderer: THREE.WebGLRenderer) {
         switch (index) {
             case 0:
                 this._updateColor(controller, 0x22d3ee);
-                this._handleSelect(controller, entity);
+                this._handleSelect(controller, entity, intersection, renderer);
                 break;
             case 1:
                 this._updateColor(controller, 0x22d3ee);
@@ -167,32 +169,39 @@ export class ControllerSystem extends System {
     }
 
     private _EndAction(index: number, controller: THREE.Group, entity: Entity) {
-        controller.userData.selected = false;
-
         if (entity.hasComponent(ButtonComponent)) {
-            const button = entity.getMutableComponent(ButtonComponent);
-            if (button && button.currState !== 'released') {
-                button.currState = 'released';
+            const component = entity.getMutableComponent(ButtonComponent);
+            if (!component) return;
+
+            if (component.currState !== 'released') {
+                component.currState = 'released'; 
                 this._updateColor(controller, 0xffffff);
             }
         }
 
         if (entity.hasComponent(DraggableReturnComponent)) {
-            const draggable = entity.getMutableComponent(DraggableReturnComponent);
-            if (draggable) {
-                draggable.state = 'to-be-detached';
-                draggable.attachedPointer = null;
-                this._updateColor(controller, 0xffffff);
-            }
+            const component = entity.getMutableComponent(DraggableReturnComponent);
+            if (!component) return;
+
+            component.state = 'to-be-detached';
+            component.attachedPointer = null;
+            this._updateColor(controller, 0xffffff);
         }
 
         if (entity.hasComponent(DraggableDefaultComponent)) {
-            const draggable = entity.getMutableComponent(DraggableDefaultComponent);
-            if (draggable) {
-                draggable.state = 'to-be-detached';
-                draggable.attachedPointer = null;
-                this._updateColor(controller, 0xffffff);
-            }
+            const component = entity.getMutableComponent(DraggableDefaultComponent);
+            if (!component) return;
+
+            component.state = 'to-be-detached';
+            component.attachedPointer = null;
+            this._updateColor(controller, 0xffffff);
+        }
+
+        if (entity.hasComponent(TeleportComponent)) {
+            const component = entity.getMutableComponent(TeleportComponent);
+            if (!component) return;
+
+            component.state = 'teleport';
         }
     }
 
@@ -214,29 +223,38 @@ export class ControllerSystem extends System {
         }
     }
 
-    private _handleSelect(controller: THREE.Group, entity: Entity) {
+    private _handleSelect(controller: THREE.Group, entity: Entity, intersection: THREE.Intersection, renderer: THREE.WebGLRenderer) {
+
         if (entity.hasComponent(ButtonComponent)) {
-            const button = entity.getMutableComponent(ButtonComponent);
-            if (button && button.currState !== 'pressed') {
-                button.currState = 'pressed';
-            }
-            controller.userData.selected = true;
+            const component = entity.getMutableComponent(ButtonComponent);
+            if (!component) return;
+            if (component.currState !== 'pressed') component.currState = 'pressed';
         }
 
         if (entity.hasComponent(DraggableReturnComponent)) {
             const draggable = entity.getMutableComponent(DraggableReturnComponent);
-            if (draggable) {
-                draggable.state = 'to-be-attached';
-                draggable.attachedPointer = controller;
-            }
+            if (!draggable) return;
+
+            draggable.state = 'to-be-attached';
+            draggable.attachedPointer = controller;
         }
 
         if (entity.hasComponent(DraggableDefaultComponent)) {
-            const draggable = entity.getMutableComponent(DraggableDefaultComponent);
-            if (draggable) {
-                draggable.state = 'to-be-attached';
-                draggable.attachedPointer = controller;
-            }
+            const component = entity.getMutableComponent(DraggableDefaultComponent);
+            if (!component) return;
+
+            component.state = 'to-be-attached';
+            component.attachedPointer = controller;
+        }
+
+        if (entity.hasComponent(TeleportComponent)) {
+            const component = entity.getMutableComponent(TeleportComponent);
+            if (!component) return;
+            
+            component.point = intersection.point;
+            component.renderer = renderer;
+            component.baseReferenceSpace = renderer.xr.getReferenceSpace();
+            component.marker?.position.copy(intersection.point);
         }
     }
 
