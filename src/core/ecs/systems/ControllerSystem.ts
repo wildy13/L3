@@ -141,17 +141,34 @@ export class ControllerSystem extends System {
 
         const wasPressed = this.previousButtonStates[side][index] || false;
 
-        if (button.pressed && !wasPressed) {
-            this._StartAction(index, controller, entity, intersection, renderer);
+        if (button.pressed) {
+            this._StartTeleport(entity, intersection.point, renderer);
+            
+            if (!wasPressed) {
+                this._StartAction(index, controller, entity, intersection, renderer);
 
-            if (gamepad && gamepad.hapticActuators && gamepad.hapticActuators.length > 0) {
-                gamepad.hapticActuators[0].pulse(.5, 80);
+                if (gamepad && gamepad.hapticActuators && gamepad.hapticActuators.length > 0) {
+                    gamepad.hapticActuators[0].pulse(.5, 80);
+                }
             }
         } else if (!button.pressed && wasPressed) {
             this._EndAction(index, controller, entity);
         }
 
         this.previousButtonStates[side][index] = button.pressed;
+    }
+
+    private _StartTeleport(entity: Entity, point: THREE.Vector3, renderer: THREE.WebGLRenderer) {
+
+        if (entity.hasComponent(TeleportComponent)) {
+            const component = entity.getMutableComponent(TeleportComponent);
+            if (!component) return;
+
+            component.point = point;
+            component.renderer = renderer;
+            component.baseReferenceSpace = renderer.xr.getReferenceSpace();
+            component.marker?.position.copy(point);
+        }
     }
 
 
@@ -174,7 +191,7 @@ export class ControllerSystem extends System {
             if (!component) return;
 
             if (component.currState !== 'released') {
-                component.currState = 'released'; 
+                component.currState = 'released';
                 this._updateColor(controller, 0xffffff);
             }
         }
@@ -250,7 +267,7 @@ export class ControllerSystem extends System {
         if (entity.hasComponent(TeleportComponent)) {
             const component = entity.getMutableComponent(TeleportComponent);
             if (!component) return;
-            
+
             component.point = intersection.point;
             component.renderer = renderer;
             component.baseReferenceSpace = renderer.xr.getReferenceSpace();

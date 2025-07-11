@@ -11,6 +11,7 @@ export declare class ControllerSystem extends System {
     private _resetLine;
     private _updateColor;
     private _handleButton;
+    private _StartTeleport;
     private _StartAction;
     private _EndAction;
     private _handleSnap;

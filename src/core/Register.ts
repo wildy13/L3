@@ -170,7 +170,6 @@ export class Register {
                 }
 
                 case 'teleport': {
-                    console.log('test')
                     const entity = this.createEntity();
                     entity.addComponent(ControllerComponent, {
                         controllers: data?.controllers,
