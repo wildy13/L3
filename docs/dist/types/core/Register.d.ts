@@ -37,6 +37,9 @@ export interface DataOptions {
             player: Group;
             marker: Mesh;
         };
+        keyboard: {
+            mesh: Mesh;
+        };
     };
 }
 /**

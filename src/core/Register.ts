@@ -5,6 +5,7 @@ import {
     SystemConstructor,
     System
 } from 'ecsy';
+import * as THREE from 'three';
 import { ControllerComponent } from './ecs/components/ControllerComponent';
 import { ControllerSystem } from './ecs/systems/ControllerSystem';
 import { Object3DComponent } from './ecs/components/Object3DComponent';
@@ -18,6 +19,8 @@ import { DraggableDefaultSystem } from './ecs/systems/DraggableDefaultSystem';
 import { MovementFPSComponent } from './ecs/components/MovementFPSComponent';
 import { TeleportComponent } from './ecs/components/TeleportComponent';
 import { TeleportSystem } from './ecs/systems/TeleportSystem';
+import { KeyboardComponent } from './ecs/components/KeyboardComponent';
+import { KeyboardSystem } from './ecs/systems/KeyboardSystem';
 
 
 /**
@@ -57,6 +60,9 @@ export interface DataOptions {
             point: Vector3;
             player: Group;
             marker: Mesh;
+        },
+        keyboard: {
+            mesh: Mesh
         }
     };
 }
@@ -77,12 +83,14 @@ export class Register {
         this._registerComponent(DraggableDefaultComponent);
         this._registerComponent(MovementFPSComponent);
         this._registerComponent(TeleportComponent);
+        this._registerComponent(KeyboardComponent);
 
         this._registerSystem(ControllerSystem);
         this._registerSystem(ButtonSystem);
         this._registerSystem(DraggableReturnSystem);
         this._registerSystem(DraggableDefaultSystem);
         this._registerSystem(TeleportSystem);
+        this._registerSystem(KeyboardSystem);
     }
 
     /**
@@ -134,7 +142,19 @@ export class Register {
                 }
 
                 case 'keyboard': {
-                    console.warn('[Register] Feature "keyboard" is not implemented yet.');
+                    options.data?.keyboard.mesh.children.forEach(child => {
+                        if (child instanceof THREE.Mesh) {
+                            if (child.isMesh) {
+                                const entity = this.createEntity();
+                                entity.addComponent(ControllerComponent, {
+                                    controllers: data?.controllers,
+                                    renderer: data?.renderer,
+                                });
+                                entity.addComponent(Object3DComponent, { object: child });
+                                entity.addComponent(KeyboardComponent);
+                            }
+                        }
+                    });
                     break;
                 }
 

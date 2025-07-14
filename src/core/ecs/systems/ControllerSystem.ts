@@ -7,6 +7,7 @@ import { DraggableReturnComponent } from '../components/DraggableReturnComponent
 import { DraggableDefaultComponent } from '../components/DraggableDefaultComponent';
 import { MovementFPSComponent } from '../components/MovementFPSComponent';
 import { TeleportComponent } from '../components/TeleportComponent';
+import { KeyboardComponent } from '../components/KeyboardComponent';
 
 export class ControllerSystem extends System {
     previousButtonStates!: { left: boolean[]; right: boolean[]; };
@@ -59,14 +60,50 @@ export class ControllerSystem extends System {
                             c.userData.lineReset = true;
                         }
 
-                        if (c.userData.isHover && entity.hasComponent(ButtonComponent)) {
-                            this._onUnhover(entity);
-                        }
+                        this._onUnhover(entity);
                     }
                 });
             });
         });
     }
+
+
+    private _onHover(entity: Entity, gamepad: Gamepad) {
+        if (entity.hasComponent(ButtonComponent)) {
+            const component = entity.getMutableComponent(ButtonComponent);
+            if (!component) return;
+
+            if (component.currState !== 'hovered') component.currState = 'hovered';
+            if (gamepad && gamepad.hapticActuators && gamepad.hapticActuators.length > 0) {
+                gamepad.hapticActuators[0].pulse(.2, 40);
+            }
+        }
+
+        if (entity.hasComponent(KeyboardComponent)) {
+            const component = entity.getMutableComponent(KeyboardComponent);
+            if (!component) return;
+
+            if (component.state !== 'hover') component.state = 'hover';
+        }
+    }
+
+
+    private _onUnhover(entity: Entity) {
+        if (entity.hasComponent(ButtonComponent)) {
+            const component = entity.getMutableComponent(ButtonComponent);
+            if (!component) return;
+
+            if (component.currState === 'hovered') component.currState = 'none';
+        }
+
+        if (entity.hasComponent(KeyboardComponent)) {
+            const component = entity.getMutableComponent(KeyboardComponent);
+            if (!component) return;
+
+            if (component.state === 'hover') component.state = 'none';
+        }
+    }
+
 
     private _handleJoystic(source: XRInputSource, controller: THREE.Group, entity: Entity, delta: number) {
 
@@ -143,7 +180,7 @@ export class ControllerSystem extends System {
 
         if (button.pressed) {
             this._StartTeleport(entity, intersection.point, renderer);
-            
+
             if (!wasPressed) {
                 this._StartAction(index, controller, entity, intersection, renderer);
 
@@ -219,6 +256,16 @@ export class ControllerSystem extends System {
             if (!component) return;
 
             component.state = 'teleport';
+            this._updateColor(controller, 0xffffff);
+        }
+
+        if (entity.hasComponent(KeyboardComponent)) {
+            const component = entity.getMutableComponent(KeyboardComponent);
+            if (!component) return;
+
+            component.state = 'none';
+            component.wasPressed = false;
+            this._updateColor(controller, 0xffffff);
         }
     }
 
@@ -273,28 +320,12 @@ export class ControllerSystem extends System {
             component.baseReferenceSpace = renderer.xr.getReferenceSpace();
             component.marker?.position.copy(intersection.point);
         }
-    }
 
-    private _onHover(entity: Entity, gamepad: Gamepad) {
-        if (!entity.hasComponent(ButtonComponent)) return;
+        if (entity.hasComponent(KeyboardComponent)) {
+            const component = entity.getMutableComponent(KeyboardComponent);
+            if (!component) return;
 
-        const button = entity.getMutableComponent(ButtonComponent);
-
-        if (!button) return;
-
-        if (button.currState !== 'hovered') {
-            button.currState = 'hovered';
-
-            if (gamepad && gamepad.hapticActuators && gamepad.hapticActuators.length > 0) {
-                gamepad.hapticActuators[0].pulse(.2, 40);
-            }
-        }
-    }
-
-    private _onUnhover(entity: Entity) {
-        const button = entity.getMutableComponent(ButtonComponent);
-        if (button && button.currState === 'hovered') {
-            button.currState = 'none';
+            component.state = 'pressed';
         }
     }
 

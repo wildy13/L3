@@ -6,6 +6,8 @@ export declare class ControllerSystem extends System {
     };
     init(attributes?: Attributes): void;
     execute(delta: number, time: number): void;
+    private _onHover;
+    private _onUnhover;
     private _handleJoystic;
     private _updateLine;
     private _resetLine;
@@ -16,7 +18,5 @@ export declare class ControllerSystem extends System {
     private _EndAction;
     private _handleSnap;
     private _handleSelect;
-    private _onHover;
-    private _onUnhover;
     private _getIntersections;
 }

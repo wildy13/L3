@@ -5,6 +5,8 @@ import { Register } from './core/Register';
 import { TextHelper } from './helpers/Text';
 import { ButtonHelper } from './helpers/Button';
 import { Load3DModel } from 'core/Load3DModel';
+import { Keyboard } from 'helpers/Keyboard';
+import { InputField } from 'helpers/InputField';
 
 /**
  * Centralized export object for L3 toolkit components.
@@ -16,7 +18,9 @@ export const L3 = {
     Register,
     Load3DModel,
     TextHelper,
-    ButtonHelper
+    ButtonHelper,
+    Keyboard,
+    InputField
 } as const;
 
 /**
@@ -33,5 +37,7 @@ export {
     Register,
     Load3DModel,
     TextHelper,
-    ButtonHelper
+    ButtonHelper,
+    Keyboard,
+    InputField
 };

@@ -28,6 +28,7 @@ export default defineConfig({
         { src: 'src/assets/fonts/Roboto/*', dest: `${outputDir}/assets/fonts/Roboto` },
         { src: 'src/assets/fonts/Space_Grotesk/*', dest: `${outputDir}/assets/fonts/Space_Grotesk` },
         { src: 'src/assets/audios/*', dest: `${outputDir}/assets/audios/` },
+        { src: 'src/assets/images/*', dest: `${outputDir}/assets/images/` }
       ]
     }),
     terser(),
