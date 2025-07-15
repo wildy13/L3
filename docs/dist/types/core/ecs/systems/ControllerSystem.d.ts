@@ -1,9 +1,7 @@
 import { Attributes, System } from 'ecsy';
 export declare class ControllerSystem extends System {
-    previousButtonStates: {
-        left: boolean[];
-        right: boolean[];
-    };
+    private previousButtonStates;
+    private inputField?;
     init(attributes?: Attributes): void;
     execute(delta: number, time: number): void;
     private _onHover;

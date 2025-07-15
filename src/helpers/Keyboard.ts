@@ -10,6 +10,7 @@ export class Keyboard extends THREE.Mesh {
   private _height: number;
   private _gap: number;
   private _activeInputField?: InputField;
+  public inputValues: Record<string, string> = {};
   private _keyActions: Record<string, () => void>;
 
   private readonly _iconMap = {
@@ -54,12 +55,19 @@ export class Keyboard extends THREE.Mesh {
   }
 
   public handleKeyPress(label: string): void {
+    if (!this._activeInputField) return;
+
+    const name = this._activeInputField.name;
+
     if (this._keyActions[label]) {
-      this._keyActions[label]();
+      this._keyActions[label](); 
     } else {
-      this._activeInputField?.append(label);
+      this._activeInputField.append(label);
     }
+
+    this.inputValues[name] = this._activeInputField.value;
   }
+
 
   private _getKeyboardLayout(mode: Mode): any[][] {
     const abcLayout = [

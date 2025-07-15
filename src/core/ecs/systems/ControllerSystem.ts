@@ -8,14 +8,19 @@ import { DraggableDefaultComponent } from '../components/DraggableDefaultCompone
 import { MovementFPSComponent } from '../components/MovementFPSComponent';
 import { TeleportComponent } from '../components/TeleportComponent';
 import { KeyboardComponent } from '../components/KeyboardComponent';
+import { InputField } from 'helpers/InputField';
 
 export class ControllerSystem extends System {
-    previousButtonStates!: { left: boolean[]; right: boolean[]; };
+    private previousButtonStates!: { left: boolean[]; right: boolean[]; };
+    private inputField?: THREE.Mesh | null;
+
     init(attributes?: Attributes): void {
         this.previousButtonStates = {
             left: [],
             right: []
         };
+
+        this.inputField = null;
     }
 
     execute(delta: number, time: number): void {
@@ -39,7 +44,6 @@ export class ControllerSystem extends System {
 
                     if (intersections.length > 0) {
                         const intersection = intersections[0];
-
                         if (c.userData.lineReset) c.userData.lineReset = false;
                         if (!c.userData.isHover) c.userData.isHover = true;
 
@@ -327,6 +331,31 @@ export class ControllerSystem extends System {
 
             component.state = 'pressed';
         }
+
+        if (intersection.object.parent instanceof InputField) {
+            const field = intersection.object.parent as InputField;
+
+            // Fokus baru
+            field.setFocus(true);
+
+            // Fokus lama di-unset
+            const oldField = this.inputField?.parent?.userData?.inputField;
+            if (oldField && oldField !== field) {
+                oldField.setFocus(false);
+            }
+
+            this.inputField = intersection.object as THREE.Mesh;
+
+            // Loop semua keyboardEntity dan assign inputField-nya
+            for (const entity of this.queries.keyboard.results) {
+                const component = entity.getMutableComponent(KeyboardComponent);
+                if (component) {
+                    component.inputField = field;
+                    component?.keyboard?.setActiveInputField(field);
+                }
+            }
+        }
+
     }
 
 
@@ -344,5 +373,8 @@ export class ControllerSystem extends System {
 ControllerSystem.queries = {
     controllers: {
         components: [ControllerComponent]
+    },
+    keyboard: {
+        components: [KeyboardComponent]
     }
 };

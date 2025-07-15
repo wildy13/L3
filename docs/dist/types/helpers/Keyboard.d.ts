@@ -7,6 +7,7 @@ export declare class Keyboard extends THREE.Mesh {
     private _height;
     private _gap;
     private _activeInputField?;
+    inputValues: Record<string, string>;
     private _keyActions;
     private readonly _iconMap;
     constructor({ width, height, gap }?: {

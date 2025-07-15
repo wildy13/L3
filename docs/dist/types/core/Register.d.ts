@@ -1,5 +1,6 @@
 import { World } from 'ecsy';
 import { Audio, Group, Mesh, Vector3, WebGLRenderer } from 'three';
+import { Keyboard } from 'helpers/Keyboard';
 /**
  * Supported feature flags.
  */
@@ -38,7 +39,8 @@ export interface DataOptions {
             marker: Mesh;
         };
         keyboard: {
-            mesh: Mesh;
+            mesh: Keyboard;
+            inputField: Group[];
         };
     };
 }

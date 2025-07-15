@@ -21,6 +21,7 @@ import { TeleportComponent } from './ecs/components/TeleportComponent';
 import { TeleportSystem } from './ecs/systems/TeleportSystem';
 import { KeyboardComponent } from './ecs/components/KeyboardComponent';
 import { KeyboardSystem } from './ecs/systems/KeyboardSystem';
+import { Keyboard } from 'helpers/Keyboard';
 
 
 /**
@@ -62,7 +63,8 @@ export interface DataOptions {
             marker: Mesh;
         },
         keyboard: {
-            mesh: Mesh
+            mesh: Keyboard,
+            inputField: Group[]
         }
     };
 }
@@ -126,6 +128,7 @@ export class Register {
                     entity.addComponent(ControllerComponent, {
                         controllers: data.controllers,
                         renderer: data.renderer,
+                        world: this.world,
                     });
 
                     entity.addComponent(Object3DComponent, {
@@ -143,26 +146,41 @@ export class Register {
 
                 case 'keyboard': {
                     options.data?.keyboard.mesh.children.forEach(child => {
-                        if (child instanceof THREE.Mesh) {
-                            if (child.isMesh) {
-                                const entity = this.createEntity();
-                                entity.addComponent(ControllerComponent, {
-                                    controllers: data?.controllers,
-                                    renderer: data?.renderer,
-                                });
-                                entity.addComponent(Object3DComponent, { object: child });
-                                entity.addComponent(KeyboardComponent);
-                            }
+                        if (child instanceof THREE.Mesh && child.isMesh) {
+                            const entity = this.createEntity();
+                            entity.addComponent(ControllerComponent, {
+                                controllers: data?.controllers,
+                                renderer: data?.renderer,
+                                world: this.world,
+                            });
+                            entity.addComponent(Object3DComponent, { object: child });
+                            entity.addComponent(KeyboardComponent, { keyboard: options.data?.keyboard.mesh });
                         }
                     });
+
+
+                    options.data?.keyboard.inputField.forEach(input => {
+                        const child = input.children[0];
+                        if (child instanceof THREE.Mesh && child.isMesh) {
+                            const entity = this.createEntity();
+                            entity.addComponent(ControllerComponent, {
+                                controllers: data?.controllers,
+                                renderer: data?.renderer,
+                                world: this.world,
+                            });
+                            entity.addComponent(Object3DComponent, { object: child });
+                        }
+                    })
                     break;
                 }
+
 
                 case 'draggable-return': {
                     const entity = this.createEntity();
                     entity.addComponent(ControllerComponent, {
                         controllers: data?.controllers,
                         renderer: data?.renderer,
+                        world: this.world,
                     });
                     entity.addComponent(Object3DComponent, { object: data?.draggableReturn?.mesh });
                     entity.addComponent(DraggableReturnComponent);
@@ -174,6 +192,7 @@ export class Register {
                     entity.addComponent(ControllerComponent, {
                         controllers: data?.controllers,
                         renderer: data?.renderer,
+                        world: this.world
                     });
                     entity.addComponent(Object3DComponent, { object: data?.draggableReturn?.mesh });
                     entity.addComponent(DraggableDefaultComponent);
@@ -184,6 +203,7 @@ export class Register {
                     entity.addComponent(ControllerComponent, {
                         controllers: data?.controllers,
                         renderer: data?.renderer,
+                        world: this.world
                     });
                     entity.addComponent(MovementFPSComponent, { player: data?.movement?.player })
                     break;
@@ -194,6 +214,7 @@ export class Register {
                     entity.addComponent(ControllerComponent, {
                         controllers: data?.controllers,
                         renderer: data?.renderer,
+                        world: this.world
                     });
                     entity.addComponent(Object3DComponent, { object: data?.teleport?.floor });
                     entity.addComponent(TeleportComponent, {

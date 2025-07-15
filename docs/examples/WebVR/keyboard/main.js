@@ -24,11 +24,9 @@ class App {
         this.template.Scene.add(this.usernameField);
 
         this.passwordField = new L3.InputField();
-        this.passwordField.name ='password field';
+        this.passwordField.name = 'password field';
         this.passwordField.position.set(this.worldPosition.x, this.worldPosition.y + .1, -.5)
         this.template.Scene.add(this.passwordField);
-
-        this.keyboard.setActiveInputField(this.usernameField);
 
         this._HandleRegister();
     }
@@ -41,7 +39,8 @@ class App {
                 controllers: this.template.Controllers,
                 renderer: this.template.Renderer,
                 keyboard: {
-                    mesh: this.keyboard
+                    mesh: this.keyboard,
+                    inputField: [this.usernameField, this.passwordField]
                 }
             }
         });
