@@ -25,7 +25,7 @@ class App {
         this.text = TextHelper.set({
             text: `Hello world — meet the Space Grotesk font!`,
             options: {
-                font: 'inter-18pt-extralight'
+                font: 'inter-18pt-black' // default space-grotesk-regular
             }
         });
         this.text.position.set(this.worldPosition.x, this.worldPosition.y, -0.5);
