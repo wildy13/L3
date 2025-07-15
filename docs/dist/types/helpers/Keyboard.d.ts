@@ -1,11 +1,12 @@
 import * as THREE from 'three';
+import { InputField } from './InputField';
 export type Mode = 'abc' | 'symbols' | 'shift';
 export declare class Keyboard extends THREE.Mesh {
     mode: Mode;
     private _width;
     private _height;
     private _gap;
-    private _inputField?;
+    private _activeInputField?;
     private _keyActions;
     private readonly _iconMap;
     constructor({ width, height, gap }?: {
@@ -13,13 +14,11 @@ export declare class Keyboard extends THREE.Mesh {
         height?: number;
         gap?: number;
     });
-    bindInputField(inputField: {
-        append: (value: string) => void;
-    }): void;
+    setActiveInputField(input: InputField): void;
+    handleKeyPress(label: string): void;
     private _getKeyboardLayout;
     private _build;
     private _createKeyMesh;
-    handleKeyPress(label: string): void;
     private _switch;
     setUppercase(enabled: boolean): void;
 }

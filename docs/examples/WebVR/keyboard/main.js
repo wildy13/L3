@@ -18,11 +18,17 @@ class App {
         this.keyboard.position.set(this.worldPosition.x, this.worldPosition.y, -.5);
         this.template.Scene.add(this.keyboard);
 
-        this.InputField = new L3.InputField();
-        this.InputField.position.set(this.worldPosition.x, this.worldPosition.y + .2, -.5)
-        this.template.Scene.add(this.InputField);
+        this.usernameField = new L3.InputField();
+        this.usernameField.name = 'username field';
+        this.usernameField.position.set(this.worldPosition.x, this.worldPosition.y + .2, -.5)
+        this.template.Scene.add(this.usernameField);
 
-        this.keyboard.bindInputField(this.InputField);
+        this.passwordField = new L3.InputField();
+        this.passwordField.name ='password field';
+        this.passwordField.position.set(this.worldPosition.x, this.worldPosition.y + .1, -.5)
+        this.template.Scene.add(this.passwordField);
+
+        this.keyboard.setActiveInputField(this.usernameField);
 
         this._HandleRegister();
     }

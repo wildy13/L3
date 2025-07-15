@@ -1,0 +1,27 @@
+export const FONT_MAP = {
+    'inter-inter-italic-variablefont-opsz,wght': new URL('../dist/assets/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf', import.meta.url).href,
+    'inter-inter-variablefont-opsz,wght': new URL('../dist/assets/fonts/Inter/Inter-VariableFont_opsz,wght.ttf', import.meta.url).href,
+    'inter-18pt-black': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-Black.ttf', import.meta.url).href,
+    'inter-18pt-blackitalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-BlackItalic.ttf', import.meta.url).href,
+    'inter-18pt-bold': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-Bold.ttf', import.meta.url).href,
+    'inter-18pt-bolditalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-BoldItalic.ttf', import.meta.url).href,
+    'inter-18pt-extrabold': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-ExtraBold.ttf', import.meta.url).href,
+    'inter-18pt-extrabolditalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-ExtraBoldItalic.ttf', import.meta.url).href,
+    'inter-18pt-extralight': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-ExtraLight.ttf', import.meta.url).href,
+    'inter-18pt-extralightitalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-ExtraLightItalic.ttf', import.meta.url).href,
+    'inter-18pt-light': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-Light.ttf', import.meta.url).href,
+    'inter-18pt-lightitalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-LightItalic.ttf', import.meta.url).href,
+    'inter-18pt-medium': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-Medium.ttf', import.meta.url).href,
+    'inter-18pt-mediumitalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-MediumItalic.ttf', import.meta.url).href,
+    'inter-18pt-regular': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-Regular.ttf', import.meta.url).href,
+    'inter-18pt-semibold': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-SemiBold.ttf', import.meta.url).href,
+    'inter-18pt-semibolditalic': new URL('../dist/assets/fonts/Inter/static/Inter_18pt-SemiBoldItalic.ttf', import.meta.url).href,
+    'space-grotesk-spacegrotesk-variablefont-wght': new URL('../dist/assets/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf', import.meta.url).href,
+    'space-grotesk-bold': new URL('../dist/assets/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf', import.meta.url).href,
+    'space-grotesk-light': new URL('../dist/assets/fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf', import.meta.url).href,
+    'space-grotesk-medium': new URL('../dist/assets/fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf', import.meta.url).href,
+    'space-grotesk-regular': new URL('../dist/assets/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf', import.meta.url).href,
+    'space-grotesk-semibold': new URL('../dist/assets/fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf', import.meta.url).href,
+} as const;
+
+export type FontKey = keyof typeof FONT_MAP;

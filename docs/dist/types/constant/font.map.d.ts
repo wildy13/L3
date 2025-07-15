@@ -1,0 +1,26 @@
+export declare const FONT_MAP: {
+    readonly 'inter-inter-italic-variablefont-opsz,wght': string;
+    readonly 'inter-inter-variablefont-opsz,wght': string;
+    readonly 'inter-18pt-black': string;
+    readonly 'inter-18pt-blackitalic': string;
+    readonly 'inter-18pt-bold': string;
+    readonly 'inter-18pt-bolditalic': string;
+    readonly 'inter-18pt-extrabold': string;
+    readonly 'inter-18pt-extrabolditalic': string;
+    readonly 'inter-18pt-extralight': string;
+    readonly 'inter-18pt-extralightitalic': string;
+    readonly 'inter-18pt-light': string;
+    readonly 'inter-18pt-lightitalic': string;
+    readonly 'inter-18pt-medium': string;
+    readonly 'inter-18pt-mediumitalic': string;
+    readonly 'inter-18pt-regular': string;
+    readonly 'inter-18pt-semibold': string;
+    readonly 'inter-18pt-semibolditalic': string;
+    readonly 'space-grotesk-spacegrotesk-variablefont-wght': string;
+    readonly 'space-grotesk-bold': string;
+    readonly 'space-grotesk-light': string;
+    readonly 'space-grotesk-medium': string;
+    readonly 'space-grotesk-regular': string;
+    readonly 'space-grotesk-semibold': string;
+};
+export type FontKey = keyof typeof FONT_MAP;

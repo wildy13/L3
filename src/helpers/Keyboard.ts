@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { InputField } from './InputField';
 
 export type Mode = 'abc' | 'symbols' | 'shift';
 
@@ -8,7 +9,7 @@ export class Keyboard extends THREE.Mesh {
   private _width: number;
   private _height: number;
   private _gap: number;
-  private _inputField?: { append: (value: string) => void };
+  private _activeInputField?: InputField;
   private _keyActions: Record<string, () => void>;
 
   private readonly _iconMap = {
@@ -37,15 +38,27 @@ export class Keyboard extends THREE.Mesh {
       },
       '.?123': () => this._switch('symbols'),
       ABC: () => this._switch('abc'),
-      enter: () => this._inputField?.append('\n'),
-      backspace: () => this._inputField?.append('[BACKSPACE]'),
+      enter: () => this._activeInputField?.append('\n'),
+      backspace: () => this._activeInputField?.backspace(),
     };
 
     this._build();
   }
 
-  public bindInputField(inputField: { append: (value: string) => void }) {
-    this._inputField = inputField;
+  public setActiveInputField(input: InputField) {
+    if (this._activeInputField && this._activeInputField !== input) {
+      this._activeInputField.setFocus(false);
+    }
+    this._activeInputField = input;
+    this._activeInputField?.setFocus(true);
+  }
+
+  public handleKeyPress(label: string): void {
+    if (this._keyActions[label]) {
+      this._keyActions[label]();
+    } else {
+      this._activeInputField?.append(label);
+    }
   }
 
   private _getKeyboardLayout(mode: Mode): any[][] {
@@ -142,14 +155,6 @@ export class Keyboard extends THREE.Mesh {
 
     mesh.userData = { canvas, ctx, texture, label };
     return mesh;
-  }
-
-  public handleKeyPress(label: string): void {
-    if (this._keyActions[label]) {
-      this._keyActions[label]();
-    } else {
-      this._inputField?.append(label);
-    }
   }
 
   private _switch(mode: Mode): void {

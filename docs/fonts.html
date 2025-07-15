@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Available Fonts</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 2rem;
+            background-color: #f9fafb;
+            color: #1a202c;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #edf2f7;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .preview {
+            font-size: 1rem;
+            color: #2d3748;
+        }
+
+        button.copy {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #3182ce;
+            color: white;
+            transition: background-color 0.2s;
+        }
+
+        button.copy:hover {
+            background-color: #2b6cb0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Available Fonts</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Preview</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="font-table-body"></tbody>
+    </table>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "l3": "./dist/index.js",
+        "three": "https://unpkg.com/three@latest/build/three.module.js",
+        "three/examples/jsm/": "https://unpkg.com/three@latest/examples/jsm/",
+        "ecsy": "https://unpkg.com/ecsy@latest/build/ecsy.module.js"
+      }
+    }
+  </script>
+
+    <script type="module">
+        import * as L3 from 'l3';
+        const FONT_MAP = L3.FONT_MAP;
+        const tbody = document.getElementById('font-table-body');
+
+        const styleEl = document.createElement('style');
+        document.head.appendChild(styleEl);
+
+        for (const [key, url] of Object.entries(FONT_MAP)) {
+            styleEl.sheet.insertRule(`
+        @font-face {
+          font-family: '${key}';
+          src: url('${url}');
+        }
+      `, styleEl.sheet.cssRules.length);
+
+            const tr = document.createElement('tr');
+
+            const keyTd = document.createElement('td');
+            keyTd.textContent = key;
+
+            const previewTd = document.createElement('td');
+            previewTd.className = 'preview';
+            previewTd.textContent = 'The quick brown fox jumps over the lazy dog.';
+            previewTd.style.fontFamily = `'${key}', sans-serif`;
+
+            const actionTd = document.createElement('td');
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy';
+            copyBtn.textContent = 'Copy key';
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(key);
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => (copyBtn.textContent = 'Copy key'), 1000);
+            };
+
+            actionTd.appendChild(copyBtn);
+
+            tr.appendChild(keyTd);
+            tr.appendChild(previewTd);
+            tr.appendChild(actionTd);
+
+            tbody.appendChild(tr);
+        }
+    </script>
+</body>
+
+</html>

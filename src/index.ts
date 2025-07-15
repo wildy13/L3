@@ -7,6 +7,7 @@ import { ButtonHelper } from './helpers/Button';
 import { Load3DModel } from 'core/Load3DModel';
 import { Keyboard } from 'helpers/Keyboard';
 import { InputField } from 'helpers/InputField';
+import { FONT_MAP } from 'constant/font.map';
 
 /**
  * Centralized export object for L3 toolkit components.
@@ -20,7 +21,8 @@ export const L3 = {
     TextHelper,
     ButtonHelper,
     Keyboard,
-    InputField
+    InputField,
+    FONT_MAP
 } as const;
 
 /**
@@ -39,5 +41,6 @@ export {
     TextHelper,
     ButtonHelper,
     Keyboard,
-    InputField
+    InputField,
+    FONT_MAP
 };

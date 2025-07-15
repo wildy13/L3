@@ -1,6 +1,7 @@
+import { FontKey } from 'constant/font.map';
 import { ColorRepresentation, Material } from 'three';
 export interface TextOptions {
-    font?: string;
+    font?: FontKey;
     fontSize?: number;
     fontStyle?: 'italic' | 'normal';
     fontWeight?: 'normal' | 'weight';

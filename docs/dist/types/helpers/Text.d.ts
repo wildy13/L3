@@ -11,9 +11,9 @@ export declare class TextHelper {
      * @param params - The text string and its style options.
      * @returns Configured Text instance.
      */
-    set({ text, options: { maxWidth, color, font, fontWeight, fontStyle, fontSize, anchorX, anchorY, whiteSpace, overflowWrap, direction, textAlign, lang, }, }: {
+    set({ text, options, }: {
         text: string;
-        options: TextOptions;
+        options?: Partial<TextOptions>;
     }): Text;
     /**
      * Updates the text content.
