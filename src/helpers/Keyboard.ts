@@ -39,7 +39,6 @@ export class Keyboard extends THREE.Mesh {
       },
       '.?123': () => this._switch('symbols'),
       ABC: () => this._switch('abc'),
-      enter: () => this._activeInputField?.append('\n'),
       backspace: () => this._activeInputField?.backspace(),
     };
 
@@ -60,8 +59,9 @@ export class Keyboard extends THREE.Mesh {
     const name = this._activeInputField.name;
 
     if (this._keyActions[label]) {
-      this._keyActions[label](); 
+      this._keyActions[label]();
     } else {
+      if (label === 'enter') return;
       this._activeInputField.append(label);
     }
 

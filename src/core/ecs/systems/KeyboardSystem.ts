@@ -8,14 +8,18 @@ export class KeyboardSystem extends System {
 
     execute(delta: number, time: number): void {
         this.queries.keyboard.results.forEach(entity => {
-            const keyboard = entity.getMutableComponent(KeyboardComponent);
+            const component = entity.getMutableComponent(KeyboardComponent);
             const object = entity.getComponent(Object3DComponent)?.object;
 
-            switch (keyboard?.state) {
+            switch (component?.state) {
                 case 'pressed': {
-                    if (!keyboard.wasPressed) {
-                        keyboard.wasPressed = true;
+                    if (!component.wasPressed) {
+                        component.wasPressed = true;
                         if (object?.parent instanceof Keyboard) {
+
+                            if (object.userData.label === 'enter') {
+                                console.log(component.keyboard?.inputValues);
+                            }
                             object.parent.handleKeyPress(object.userData.label);
                         }
                     }

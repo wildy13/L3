@@ -9,6 +9,7 @@ import { MovementFPSComponent } from '../components/MovementFPSComponent';
 import { TeleportComponent } from '../components/TeleportComponent';
 import { KeyboardComponent } from '../components/KeyboardComponent';
 import { InputField } from 'helpers/InputField';
+import { InputFieldComponent } from '../components/InputFieldComponent';
 
 export class ControllerSystem extends System {
     private previousButtonStates!: { left: boolean[]; right: boolean[]; };
@@ -271,6 +272,14 @@ export class ControllerSystem extends System {
             component.wasPressed = false;
             this._updateColor(controller, 0xffffff);
         }
+
+        if (entity.hasComponent(InputFieldComponent)) {
+            const component = entity.getMutableComponent(InputFieldComponent)
+            if (!component) return;
+
+            component.state = 'none';
+            this._updateColor(controller, 0xffffff);
+        }
     }
 
     private _handleSnap(controller: THREE.Group, entity: Entity) {
@@ -332,30 +341,12 @@ export class ControllerSystem extends System {
             component.state = 'pressed';
         }
 
-        if (intersection.object.parent instanceof InputField) {
-            const field = intersection.object.parent as InputField;
+        if (entity.hasComponent(InputFieldComponent)) {
+            const component = entity.getMutableComponent(InputFieldComponent)
+            if (!component) return;
 
-            // Fokus baru
-            field.setFocus(true);
-
-            // Fokus lama di-unset
-            const oldField = this.inputField?.parent?.userData?.inputField;
-            if (oldField && oldField !== field) {
-                oldField.setFocus(false);
-            }
-
-            this.inputField = intersection.object as THREE.Mesh;
-
-            // Loop semua keyboardEntity dan assign inputField-nya
-            for (const entity of this.queries.keyboard.results) {
-                const component = entity.getMutableComponent(KeyboardComponent);
-                if (component) {
-                    component.inputField = field;
-                    component?.keyboard?.setActiveInputField(field);
-                }
-            }
+            component.state = 'active';
         }
-
     }
 
 
@@ -374,7 +365,4 @@ ControllerSystem.queries = {
     controllers: {
         components: [ControllerComponent]
     },
-    keyboard: {
-        components: [KeyboardComponent]
-    }
 };

@@ -22,6 +22,9 @@ import { TeleportSystem } from './ecs/systems/TeleportSystem';
 import { KeyboardComponent } from './ecs/components/KeyboardComponent';
 import { KeyboardSystem } from './ecs/systems/KeyboardSystem';
 import { Keyboard } from 'helpers/Keyboard';
+import { InputFieldComponent } from './ecs/components/InputFieldComponent';
+import { InputField } from 'helpers/InputField';
+import { InputFieldSystem } from './ecs/systems/InputFieldSystem';
 
 
 /**
@@ -64,7 +67,7 @@ export interface DataOptions {
         },
         keyboard: {
             mesh: Keyboard,
-            inputField: Group[]
+            inputField: InputField[]
         }
     };
 }
@@ -86,6 +89,7 @@ export class Register {
         this._registerComponent(MovementFPSComponent);
         this._registerComponent(TeleportComponent);
         this._registerComponent(KeyboardComponent);
+        this._registerComponent(InputFieldComponent);
 
         this._registerSystem(ControllerSystem);
         this._registerSystem(ButtonSystem);
@@ -93,6 +97,7 @@ export class Register {
         this._registerSystem(DraggableDefaultSystem);
         this._registerSystem(TeleportSystem);
         this._registerSystem(KeyboardSystem);
+        this._registerSystem(InputFieldSystem);
     }
 
     /**
@@ -169,6 +174,7 @@ export class Register {
                                 world: this.world,
                             });
                             entity.addComponent(Object3DComponent, { object: child });
+                            entity.addComponent(InputFieldComponent);
                         }
                     })
                     break;
