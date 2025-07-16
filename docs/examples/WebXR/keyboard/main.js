@@ -28,8 +28,6 @@ class App {
         this.passwordField.position.set(this.worldPosition.x, this.worldPosition.y + .1, -.5)
         this.template.Scene.add(this.passwordField);
 
-        this.keyboard.setActiveInputField(this.usernameField);
-
         this._HandleRegister();
     }
 
